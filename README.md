@@ -37,7 +37,7 @@ Example Playbook
 ----------------
 
 ### Create infra
-```bash
+```yaml
 - name: Create infra
   hosts: localhost
   connection: local
@@ -60,7 +60,7 @@ Example Playbook
 ```
 
 ### Destroy infra
-```bash
+```yaml
 - name: Destroy infra
   hosts: localhost
   connection: local
