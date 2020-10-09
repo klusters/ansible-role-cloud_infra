@@ -1,0 +1,7 @@
+{
+    "instance_roles": {
+{% for key, value in instances.items() %}
+"{{ key }}" : {{ value | to_json }}{{ ", " if not loop.last}}
+{% endfor %}
+    }
+}

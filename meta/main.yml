@@ -1,0 +1,21 @@
+galaxy_info:
+  author: Klusters
+  description: Create & Destroy Cloud Infra
+  company: ''
+  license: GPL-2.0-or-later
+  min_ansible_version: 2.9
+  platforms:
+  - name: EL
+    versions:
+    - 8
+    - 7
+  - name: Ubuntu
+    versions:
+      - xenial
+      - bionic
+
+  galaxy_tags:
+  - terraform
+  - gcp
+
+dependencies: []

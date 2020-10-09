@@ -1,0 +1,27 @@
+---
+
+- name: Get Service Accounts informations
+  gcp_iam_service_account_info:
+    project: "{{ lookup('env','GCLOUD_PROJECT') }}"
+    auth_kind: serviceaccount
+  register: gcp_sa
+
+- name: Get Ansible service account ID & Jump Host name
+  set_fact:
+    ansible_sa_id: "{{ gcp_sa.resources | json_query(query) | first }}"
+    jump_host_name: "{{ groups['es_jump'] | first }}"
+  vars:
+    query: "[?displayName=='ansible-sa'].uniqueId"
+
+- name: Get Jump Host public IP
+  set_fact:
+    jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
+
+- name: Generate SSH config
+  template:
+    src: "{{ playbook_dir }}/../../../templates/ssh_config.j2"
+    dest: "{{ ssh_files_path }}/{{ ssh_config_name }}"
+    mode: 0644
+
+- name: Refresh inventory
+  meta: refresh_inventory

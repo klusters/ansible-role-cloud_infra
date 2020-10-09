@@ -1,0 +1,17 @@
+---
+
+- name: Generate dynamic inventory file
+  template:
+    src: '{{ template_inventory }}'
+    dest: '{{ playbook_dir }}/../../../inventories/{{ target_env }}/{{ template_inventory.split(".j2")[0] }}'
+    mode: 0644
+
+- name: Refresh inventory
+  meta: refresh_inventory
+
+- name: Install gce dependency on controlling host
+  pip:
+    name:
+    - google-auth
+    - jmespath
+  delegate_to: 127.0.0.1

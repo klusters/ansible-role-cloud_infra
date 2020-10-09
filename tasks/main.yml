@@ -1,0 +1,12 @@
+---
+
+- name: Set cloud provider dependent variables
+  include_vars: '{{ cloud_provider }}.yml'
+
+- import_tasks: terraform.yml
+
+- import_tasks: prepare.yml
+  when: state == 'present'
+
+- import_tasks: 'ssh_{{ cloud_provider }}.yml'
+  when: state == 'present'

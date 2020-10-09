@@ -1,0 +1,19 @@
+---
+
+target_env: test
+
+cloud_provider: 'gcp'
+
+ssh_files_path: "{{ lookup('env','HOME') }}/.ssh"
+
+ssh_privkey_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa"
+ssh_publkey_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa.pub"
+ssh_config_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa.config"
+
+terraform_project_repo: 'https://github.com/klusters/terraform-gcp-infra'
+terraform_project_version: 'main'
+
+ansible_ssh_common_args: "-F {{ ssh_files_path }}/{{ ssh_config_name }}"
+
+terraform_env_vars:
+  TF_VAR_ssh_public_key: "{{ ssh_files_path }}/{{ ssh_publkey_name }}"

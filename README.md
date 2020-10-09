@@ -7,6 +7,20 @@ Provide the terraform github repo to use and some vars
 Requirements
 ------------
 
+### Environment Variables
+
+GOOGLE_APPLICATION_CREDENTIALS: GCP Service Account Key file (path)
+GCP_SERVICE_ACCOUNT_FILE: GCP Service Account Key file (path)
+
+GCLOUD_PROJECT : The GCP Project ID to use
+
+Examples :
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS=~/.gcp/creds/ci-123456-213.json
+export GCP_SERVICE_ACCOUNT_FILE=$GOOGLE_APPLICATION_CREDENTIALS
+
+export GCLOUD_PROJECT=ci-123456
+```
 see python_requirements.txt and / or ansible_requirements.yml
 
 Role Variables
@@ -22,7 +36,7 @@ None
 Example Playbook
 ----------------
 
-Create infra
+### Create infra
 ```bash
 - name: Create infra
   hosts: localhost
@@ -45,7 +59,7 @@ Create infra
       timeout: 60
 ```
 
-Destroy infra
+### Destroy infra
 ```bash
 - name: Destroy infra
   hosts: localhost
