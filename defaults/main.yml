@@ -15,7 +15,5 @@ terraform_project_version: 'main'
 
 ansible_ssh_common_args: "-F {{ ssh_files_path }}/{{ ssh_config_name }}"
 
-terraform_dir: "{{ lookup('env','HOME') }}/terraform"
-
 terraform_env_vars:
   TF_VAR_ssh_public_key: "{{ ssh_files_path }}/{{ ssh_publkey_name }}"
