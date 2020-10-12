@@ -1,21 +1,15 @@
 ---
 
-- name: Create temporary build directory
-  tempfile:
-    state: directory
-    suffix: build
-  register: tmp_dir
-
 - name: Get Terraform scripts
   git:
     repo: '{{ terraform_project_repo }}'
-    dest: '{{ tmp_dir.path }}'
+    dest: '{{ terraform_dir }}'
     version: '{{ terraform_project_version }}'
 
 - name: Generate Terraform vars
   template:
     src: '{{ template_tfvars }}'
-    dest: '{{ tmp_dir.path }}/terraform.tfvars.json'
+    dest: '{{ terraform_dir }}/terraform.tfvars.json'
     mode: 0644
   when: state == 'present'
 
@@ -37,6 +31,6 @@
 - name: Terraform
   terraform:
     force_init: yes
-    project_path: '{{ tmp_dir.path }}'
+    project_path: '{{ terraform_dir }}'
     state: '{{ state }}'
   environment: '{{ terraform_env_vars | combine(terraform_extra_env_vars) }}'
