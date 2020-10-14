@@ -6,9 +6,9 @@ cloud_provider: 'gcp'
 
 ssh_files_path: "{{ lookup('env','HOME') }}/.ssh"
 
-ssh_privkey_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa"
-ssh_publkey_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa.pub"
-ssh_config_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa.config"
+ssh_privkey_name: "ansible_sa"
+ssh_publkey_name: "ansible_sa.pub"
+ssh_config_name: "ansible_sa.config"
 
 terraform_project_repo: 'https://github.com/klusters/terraform-gcp-infra'
 terraform_project_version: 'main'
