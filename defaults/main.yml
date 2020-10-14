@@ -19,3 +19,4 @@ terraform_env_vars:
   TF_VAR_ssh_public_key: "{{ ssh_files_path }}/{{ ssh_publkey_name }}"
 
 template_inventory: 'gce_instances.gcp.yml.j2'
+template_tfvars: 'tfvars.json.j2'
