@@ -20,3 +20,4 @@ terraform_env_vars:
 
 template_inventory: 'gce_instances.gcp.yml.j2'
 template_tfvars: 'tfvars.json.j2'
+inventory_dest: '{{ playbook_dir }}/../../../inventories/{{ target_env }}'
