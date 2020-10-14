@@ -9,7 +9,6 @@
 - name: Get Ansible service account ID & Jump Host name
   set_fact:
     ansible_sa_id: "{{ gcp_sa.resources | json_query(query) | first }}"
-    # jump_host_name: "{{ groups['es_jump'] | first }}"
   vars:
     query: "[?displayName=='ansible-sa'].uniqueId"
 
