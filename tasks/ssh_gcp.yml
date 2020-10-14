@@ -9,13 +9,13 @@
 - name: Get Ansible service account ID & Jump Host name
   set_fact:
     ansible_sa_id: "{{ gcp_sa.resources | json_query(query) | first }}"
-    jump_host_name: "{{ groups['es_jump'] | first }}"
+    # jump_host_name: "{{ groups['es_jump'] | first }}"
   vars:
     query: "[?displayName=='ansible-sa'].uniqueId"
 
-- name: Get Jump Host public IP
-  set_fact:
-    jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
+# - name: Get Jump Host public IP
+#   set_fact:
+#     jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
 
 - name: Generate SSH config
   template:
