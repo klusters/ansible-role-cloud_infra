@@ -1,10 +1,5 @@
 host *
   User sa_{{ ansible_sa_id }}
   IdentityFile {{ ssh_files_path }}/{{ ssh_privkey_name }}
-  ControlMaster auto
-  ControlPath {{ ssh_files_path }}/%r@%h
-  ControlPersist 5m
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-## for subnetwork in subnetworks
-#  subnetwork | ipaddr('network') | regex_replace('\\.0', '.*')
