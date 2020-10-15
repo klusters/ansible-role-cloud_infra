@@ -3,7 +3,10 @@ projects:
   - {{ lookup('env','GCLOUD_PROJECT') }}
 filters:
   - labels.molecule_scenario = {{ lookup('env','MOLECULE_SCENARIO_NAME') }}
+
 auth_kind: serviceaccount
+service_account_file: {{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}
+
 scopes:
   - 'https://www.googleapis.com/auth/cloud-platform'
   - 'https://www.googleapis.com/auth/compute.readonly'
