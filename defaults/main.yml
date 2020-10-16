@@ -21,3 +21,5 @@ template_tfvars: 'tfvars.json.j2'
 template_ssh_config: 'ssh_config.j2'
 
 inventory_dest: '{{ playbook_dir }}/../../../inventories/{{ target_env }}'
+
+ansible_sa_name: 'ansible_sa_{{ 1000 | random }}'
