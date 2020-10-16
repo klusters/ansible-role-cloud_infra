@@ -11,7 +11,7 @@
   set_fact:
     ansible_sa_id: '{{ gcp_sa.resources | json_query(query) | first }}'
   vars:
-    query: "[?displayName=='{{ ansible_sa_name }}'].uniqueId"
+    query: "[?displayName==ansible_sa_name].uniqueId"
 
 - name: Get Jump Host name
   set_fact:
