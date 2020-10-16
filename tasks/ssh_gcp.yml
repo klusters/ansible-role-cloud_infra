@@ -18,14 +18,7 @@
     jump_mode: yes
   when: "'{{ jump_group }}' in groups"
 
-- name: Get Jump Host name
-  set_fact:
-    jump_host_name: "{{ groups['es_jump'] | first }}"
-  when: jump_mode | default(False) | bool
-
-- name: Get Jump Host public IP
-  set_fact:
-    jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
+- import_tasks: 'ssh_jump.yml'
   when: jump_mode | default(False) | bool
 
 - name: Generate SSH config
