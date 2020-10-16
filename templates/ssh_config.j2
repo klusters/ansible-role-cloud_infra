@@ -51,9 +51,3 @@ host 9*
   IdentityFile {{ ssh_files_path }}/{{ ssh_privkey_name }}
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
-
-host *
-  User sa_{{ ansible_sa_id }}
-  IdentityFile {{ ssh_files_path }}/{{ ssh_privkey_name }}
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
