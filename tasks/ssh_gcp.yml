@@ -4,6 +4,7 @@
   gcp_iam_service_account_info:
     project: "{{ lookup('env','GCLOUD_PROJECT') }}"
     auth_kind: serviceaccount
+    service_account_file: "{{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}"
   register: gcp_sa
 
 - name: Get Ansible service account ID & Jump Host name
