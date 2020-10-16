@@ -17,10 +17,6 @@
 #   set_fact:
 #     jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
 
-- name: Set Ansible User
-  set_fact:
-    ansible_user: "sa_{{ ansible_sa_id }}"
-
 - name: Generate SSH config
   template:
     src: "ssh_config.j2"
