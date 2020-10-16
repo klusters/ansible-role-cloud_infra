@@ -13,15 +13,20 @@
   vars:
     query: "[?displayName=='{{ ansible_sa_name }}'].uniqueId"
 
+- name: Set jump_mode if jump_group exists
+  set_fact:
+    jump_mode: yes
+  when: "'{{ jump_group }}' in groups"
+
 - name: Get Jump Host name
   set_fact:
     jump_host_name: "{{ groups['es_jump'] | first }}"
-  when: "'es_jump' in groups"
+  when: jump_mode | default(False) | bool
 
 - name: Get Jump Host public IP
   set_fact:
     jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
-  when: "'es_jump' in groups"
+  when: jump_mode | default(False) | bool
 
 - name: Generate SSH config
   template:
