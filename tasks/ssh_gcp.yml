@@ -9,18 +9,24 @@
 
 - name: Get Ansible service account ID & Jump Host name
   set_fact:
-    ansible_sa_id: "{{ gcp_sa.resources | json_query(query) | first }}"
+    ansible_sa_id: '{{ gcp_sa.resources | json_query(query) | first }}'
   vars:
     query: "[?displayName=='ansible-sa'].uniqueId"
 
-# - name: Get Jump Host public IP
-#   set_fact:
-#     jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
+- block:
+  - name: Get Jump Host name
+    set_fact:
+      jump_host_name: "{{ groups['es_jump'] | first }}"
+
+  - name: Get Jump Host public IP
+    set_fact:
+      jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
+  when: template_ssh_config == 'ssh_config.j2'
 
 - name: Generate SSH config
   template:
-    src: "ssh_config.j2"
-    dest: "{{ ssh_files_path }}/{{ ssh_config_name }}"
+    src: '{{ template_ssh_config }}'
+    dest: '{{ ssh_files_path }}/{{ ssh_config_name }}'
     mode: 0644
 
 - name: Refresh inventory

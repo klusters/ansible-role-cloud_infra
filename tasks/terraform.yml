@@ -27,7 +27,7 @@
 
 - name: Generate SSH key
   openssh_keypair:
-    path: "{{ ssh_files_path }}/{{ ssh_privkey_name }}"
+    path: '{{ ssh_files_path }}/{{ ssh_privkey_name }}'
     type: rsa
     size: 4096
     state: present
