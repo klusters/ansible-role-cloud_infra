@@ -32,7 +32,6 @@
     size: 4096
     state: present
     force: yes
-  when: state == 'present'
 
 - name: Terraform
   terraform:
