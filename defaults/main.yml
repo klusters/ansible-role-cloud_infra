@@ -6,14 +6,21 @@ cloud_provider: 'gcp'
 
 ssh_files_path: "{{ lookup('env','HOME') }}/.ssh"
 
-ssh_privkey_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa"
-ssh_publkey_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa.pub"
-ssh_config_name: "{{ lookup('env','GCLOUD_PROJECT') }}_ansible_sa.config"
+ssh_privkey_name: "ansible_sa"
+ssh_publkey_name: "ansible_sa.pub"
+ssh_config_name: "ansible_sa.config"
 
 terraform_project_repo: 'https://github.com/klusters/terraform-gcp-infra'
 terraform_project_version: 'main'
 
-ansible_ssh_common_args: "-F {{ ssh_files_path }}/{{ ssh_config_name }}"
-
 terraform_env_vars:
   TF_VAR_ssh_public_key: "{{ ssh_files_path }}/{{ ssh_publkey_name }}"
+terraform_dir: "{{ lookup('env','HOME') }}/terraform"
+
+template_inventory: 'gce_instances.gcp.yml.j2'
+template_tfvars: 'tfvars.json.j2'
+template_ssh_config: 'ssh_config.j2'
+
+inventory_dest: '{{ playbook_dir }}/../../../inventories/{{ target_env }}'
+
+jump_group: es_jump

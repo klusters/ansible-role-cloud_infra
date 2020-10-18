@@ -1,21 +1,20 @@
 ---
 
-- name: Create temporary build directory
-  tempfile:
-    state: directory
-    suffix: build
-  register: tmp_dir
-
 - name: Get Terraform scripts
   git:
     repo: '{{ terraform_project_repo }}'
-    dest: '{{ tmp_dir.path }}'
+    dest: '{{ terraform_dir }}'
     version: '{{ terraform_project_version }}'
+
+- name: Generate Ansible SA name
+  set_fact:
+    ansible_sa_name: 'ansible-sa-{{ 1000 | random }}'
+  when: state == 'present'
 
 - name: Generate Terraform vars
   template:
     src: '{{ template_tfvars }}'
-    dest: '{{ tmp_dir.path }}/terraform.tfvars.json'
+    dest: '{{ terraform_dir }}/terraform.tfvars.json'
     mode: 0644
   when: state == 'present'
 
@@ -27,16 +26,17 @@
 
 - name: Generate SSH key
   openssh_keypair:
-    path: "{{ ssh_files_path }}/{{ ssh_privkey_name }}"
+    path: '{{ ssh_files_path }}/{{ ssh_privkey_name }}'
     type: rsa
     size: 4096
     state: present
     force: yes
-  when: state == 'present'
 
 - name: Terraform
   terraform:
     force_init: yes
-    project_path: '{{ tmp_dir.path }}'
+    project_path: '{{ terraform_dir }}'
     state: '{{ state }}'
+    binary_path: "{{ lookup('env','TERRAFORM_CLI_PATH') + '/terraform-bin' }}"
+    workspace: "{{ lookup('env','MOLECULE_SCENARIO_NAME') }}"
   environment: '{{ terraform_env_vars | combine(terraform_extra_env_vars) }}'

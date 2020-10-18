@@ -3,5 +3,6 @@
 {% for key, value in instances.items() %}
 "{{ key }}" : {{ value | to_json }}{{ ", " if not loop.last}}
 {% endfor %}
-    }
+    },
+    "ansible_sa_name": "{{ ansible_sa_name }}"
 }

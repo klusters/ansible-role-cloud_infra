@@ -1,6 +1,4 @@
 ---
 
-template_inventory: 'gce_instances.gcp.yml.j2'
-template_tfvars: 'tfvars.json.j2'
 terraform_extra_env_vars:
   TF_VAR_project_id: "{{ lookup('env','GCLOUD_PROJECT') }}"

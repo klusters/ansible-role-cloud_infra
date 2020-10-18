@@ -1,0 +1,8 @@
+{
+    "instance_roles": {
+{% for instance in molecule_yml.platforms %}
+"{{ instance.name }}" : {{ instance | to_json }}{{ ", " if not loop.last}}
+{% endfor %}
+    },
+    "ansible_sa_name": "{{ ansible_sa_name }}"
+}
