@@ -16,12 +16,12 @@
 - name: Get Jump Host name
   set_fact:
     jump_host_name: "{{ groups[jump_group] | first }}"
-  when: "'{{ jump_group }}' in groups"
+  when: "jump_group in groups"
 
 - name: Get Jump Host public IP
   set_fact:
     jump_host_public_ip: "{{ hostvars[jump_host_name].networkInterfaces[0].accessConfigs[0].natIP }}"
-  when: "'{{ jump_group }}' in groups"
+  when: "jump_group in groups"
 
 - name: Generate SSH config
   template:
