@@ -24,3 +24,5 @@ template_ssh_config: 'ssh_config.j2'
 inventory_dest: '{{ playbook_dir }}/../../../inventories/{{ target_env }}'
 
 jump_group: es_jump
+
+ansible_sa_name: "ansible-sa{{ lookup('env','MOLECULE_SCENARIO_NAME') }}{{ lookup('env','MOLECULE_SCENARIO_NAME') }}{{ lookup('env','GITHUB_RUN_NUMBER}') }}"
