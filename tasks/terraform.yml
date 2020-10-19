@@ -6,11 +6,6 @@
     dest: '{{ terraform_dir }}'
     version: '{{ terraform_project_version }}'
 
-- name: Generate Ansible SA name
-  set_fact:
-    ansible_sa_name: 'ansible-sa-{{ 1000 | random }}'
-  when: state == 'present'
-
 - name: Generate Terraform vars
   template:
     src: '{{ template_tfvars }}'
