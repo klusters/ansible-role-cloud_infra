@@ -3,7 +3,7 @@ host {{ jump_host_name }}
   User sa_{{ ansible_sa_id }}
   IdentityFile {{ ssh_files_path }}/{{ ssh_privkey_name }}
   ControlMaster auto
-  ControlPath ~/.ssh/%r@%h:%p
+  ControlPath {{ ssh_files_path }}/%r@%h:%p
   ControlPersist 5m
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
@@ -13,7 +13,7 @@ host 10.*
   User sa_{{ ansible_sa_id }}
   IdentityFile {{ ssh_files_path }}/{{ ssh_privkey_name }}
   ControlMaster auto
-  ControlPath ~/.ssh/%r@%h:%p
+  ControlPath {{ ssh_files_path }}/%r@%h:%p
   ControlPersist 5m
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null

@@ -11,7 +11,6 @@
     src: '{{ template_tfvars }}'
     dest: '{{ terraform_dir }}/terraform.tfvars.json'
     mode: 0644
-  when: state == 'present'
 
 - name: Create {{ ssh_files_path }}
   file:
@@ -32,5 +31,6 @@
     force_init: yes
     project_path: '{{ terraform_dir }}'
     state: '{{ state }}'
-    workspace: "{{ lookup('env','MOLECULE_SCENARIO_NAME') | default(omit, True) }}"
+    binary_path: "{{ terraform_bin | d(omit) }}"
+    workspace: "{{ terraform_workspace }}"
   environment: '{{ terraform_env_vars | combine(terraform_extra_env_vars) }}'
