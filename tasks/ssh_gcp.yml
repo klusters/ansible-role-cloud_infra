@@ -13,9 +13,6 @@
   vars:
     query: "[?displayName=='{{ ansible_sa_name }}'].uniqueId"
 
-- name: Refresh inventory
-  meta: refresh_inventory
-
 - name: Get Jump Host name
   set_fact:
     jump_host_name: "{{ groups[jump_group] | first }}"
@@ -31,3 +28,6 @@
     src: '{{ template_ssh_config }}'
     dest: '{{ ssh_files_path }}/{{ ssh_config_name }}'
     mode: 0644
+
+- name: Refresh inventory
+  meta: refresh_inventory
