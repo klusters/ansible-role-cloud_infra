@@ -6,12 +6,9 @@
     dest: '{{ inventory_dest }}/{{ template_inventory.split(".j2")[0] }}'
     mode: 0644
 
+- name: Sleep for 60 seconds and continue with play
+  wait_for:
+    timeout: 60
+
 - name: Refresh inventory
   meta: refresh_inventory
-
-- name: Install gce dependency on controlling host
-  pip:
-    name:
-    - google-auth
-    - jmespath
-  delegate_to: 127.0.0.1
