@@ -8,10 +8,3 @@
 
 - name: Refresh inventory
   meta: refresh_inventory
-
-- name: Install gce dependency on controlling host
-  pip:
-    name:
-    - google-auth
-    - jmespath
-  delegate_to: 127.0.0.1
