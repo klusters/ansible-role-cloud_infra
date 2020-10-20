@@ -32,6 +32,5 @@
     force_init: yes
     project_path: '{{ terraform_dir }}'
     state: '{{ state }}'
-    binary_path: "{{ lookup('env','TERRAFORM_CLI_PATH') + '/terraform-bin' }}"
-    workspace: "{{ lookup('env','MOLECULE_SCENARIO_NAME') }}"
+    workspace: "{{ lookup('env','MOLECULE_SCENARIO_NAME') | default(omit, True) }}"
   environment: '{{ terraform_env_vars | combine(terraform_extra_env_vars) }}'
