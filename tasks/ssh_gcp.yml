@@ -13,6 +13,9 @@
   vars:
     query: "[?displayName=='{{ ansible_sa_name }}'].uniqueId"
 
+- debug:
+    var: groups
+
 - name: Get Jump Host name
   set_fact:
     jump_host_name: "{{ groups[jump_group] | first }}"
