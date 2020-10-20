@@ -32,5 +32,5 @@
     force_init: yes
     project_path: '{{ terraform_dir }}'
     state: '{{ state }}'
-    workspace: "{{ terraform_workspace | default('default') }}"
+    workspace: "{{ terraform_workspace }}"
   environment: '{{ terraform_env_vars | combine(terraform_extra_env_vars) }}'
