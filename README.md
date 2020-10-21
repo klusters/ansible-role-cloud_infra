@@ -46,7 +46,7 @@ Role Variables
 | `template_ssh_config`       | No | `ssh_config.j2`                                                      | SSH config file template to use |
 | `inventory_dest`            | No | `{{ playbook_dir }}/../../../inventories/{{ target_env }}`           | Path to store generated dynamic inventory to |
 | `jump_group`                | No | `es_jump`                                                            | Jump / Bastion Group |
-| `ansible_sa_name`           | No | `ansible-sa{{ lookup('env','MOLECULE_SCENARIO_NAME') | regex_replace('_', '-') }}` | Ansible Service Account name used for SSH |
+| `ansible_sa_name`           | No | `ansible-sa`                                                         | Ansible Service Account name used for SSH |
 
 Dependencies
 ------------
