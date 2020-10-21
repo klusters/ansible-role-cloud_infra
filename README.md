@@ -11,23 +11,42 @@ Requirements
 
 GOOGLE_APPLICATION_CREDENTIALS: GCP Service Account Key file (path)
 
-GCP_SERVICE_ACCOUNT_FILE: GCP Service Account Key file (path)
-
 GCLOUD_PROJECT : The GCP Project ID to use
 
 Examples :
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS=~/.gcp/creds/ci-123456-213.json
-export GCP_SERVICE_ACCOUNT_FILE=$GOOGLE_APPLICATION_CREDENTIALS
 
 export GCLOUD_PROJECT=ci-123456
 ```
-see python_requirements.txt and / or ansible_requirements.yml
+
+terraform >= 0.13
+ansible >= 2.10
+jmespath
+google-auth
 
 Role Variables
 --------------
 
-WIP
+| Variable                 | Required | Type | Default                                                                  | Comments                                        |
+| ------------------------ | -------- | -------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
+| `target_env`                | No | string | `test`                                                               | Environment used for inventory filters |
+| `cloud_provider`            | No | string | `gcp`                                                                | Cloud provider to use to deploy infra |
+| `ssh_files_path`            | No | string | `{{ lookup('env','HOME') }}/.ssh`                                    | Path to the ssh directory, to store ssh config & ssh keys files (usually ~/.ssh) |
+| `ssh_privkey_name`          | No | string | `ansible_sa`                                                         | SSH private key name |
+| `ssh_publkey_name`          | No | string | `ansible_sa.pub`                                                     | SSH public key name |
+| `ssh_config_name`           | No | string | `ansible_sa.config`                                                  | SSH Config file name |
+| `terraform_project_repo`    | No | string | `https://github.com/klusters/terraform-gcp-infra`                    | Git repo url to use for terraform scripts |
+| `terraform_project_version` | No | string | `main`                                                               | Git repo branch/tag to use for terraform scripts |
+| `terraform_env_vars`        | No | dict  | `TF_VAR_ssh_public_key: {{ ssh_files_path }}/{{ ssh_publkey_name }}` | Environment variables to use when terraform apply |
+| `terraform_dir`             | No | string | `{{ lookup('env','HOME') }}/terraform`                               | Path to store terraform scripts to |
+| `terraform_workspace`       | No | string | `default`                                                            | Terraform workspace to use |
+| `template_inventory`        | No | string | `gce_instances.gcp.yml.j2`                                           | Dynamic inventory template to use |
+| `template_tfvars`           | No | string | `tfvars.json.j2`                                                     | Terraform variables template |
+| `template_ssh_config`       | No | string | `ssh_config.j2`                                                      | SSH config file template to use |
+| `inventory_dest`            | No | string | `{{ playbook_dir }}/../../../inventories/{{ target_env }}`           | Path to store generated dynamic inventory to |
+| `jump_group`                | No | string | `es_jump`                                                            | Jump / Bastion Group |
+| `ansible_sa_name`           | No | string | `ansible-sa{{ lookup('env','MOLECULE_SCENARIO_NAME') | regex_replace('_', '-') }}` | Ansible Service Account name used for SSH |
 
 Dependencies
 ------------
