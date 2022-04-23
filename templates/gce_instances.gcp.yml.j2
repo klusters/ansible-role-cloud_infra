@@ -6,14 +6,14 @@ projects:
 filters:
   - labels.createdby = "iac"
   - labels.environment = "{{ target_env }}"
-  - labels.app = "elasticsearch"
+  - labels.app = "{{ app }}"
 
 keyed_groups:
-  # WILL CREATE GROUPS NAMED "es_<role>" (e.g. es_master)
-  - prefix: es
+  # WILL CREATE GROUPS NAMED "{{ grp_prefix }}_<role>" (e.g. {{ grp_prefix }}_master)
+  - prefix: {{ grp_prefix }}
     key: labels.role
 
-  - prefix: es
+  - prefix: {{ grp_prefix }}
     key: labels.purpose
 
 auth_kind: serviceaccount
