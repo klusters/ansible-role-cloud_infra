@@ -1,8 +1,7 @@
 {
     "instance_roles": {
-{% for key, value in instances.items() %}
-"{{ key }}" : {{ value | to_json }}{{ ", " if not loop.last}}
+{% for key, value in instance_roles.items() %}
+"{{ key }}" : {{ value | to_json }}{{ "," if not loop.last }}
 {% endfor %}
-    },
-    "ansible_sa_name": "{{ ansible_sa_name }}"
+    }
 }

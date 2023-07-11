@@ -1,31 +1,289 @@
 ---
 
-target_env: test
+target_env: build
 
 cloud_provider: 'gcp'
-
-ssh_files_path: "{{ lookup('env','HOME') }}/.ssh"
-
-ssh_privkey_name: "ansible_sa"
-ssh_publkey_name: "ansible_sa.pub"
-ssh_config_name: "ansible_sa.config"
 
 terraform_project_repo: 'https://github.com/klusters/terraform-gcp-infra'
 terraform_project_version: 'main'
 
-terraform_env_vars:
-  TF_VAR_ssh_public_key: "{{ ssh_files_path }}/{{ ssh_publkey_name }}"
+terraform_env_vars: {}
+
 terraform_dir: "{{ lookup('env','HOME') }}/terraform"
-terraform_workspace: 'default'
+terraform_workspace: '{{ target_env }}'
 template_inventory: 'gce_instances.gcp.yml.j2'
 template_tfvars: 'tfvars.json.j2'
-template_ssh_config: 'ssh_config.j2'
 
 inventory_dest: '{{ playbook_dir }}/../../../inventories/{{ target_env }}'
 
-jump_group: es_jump
+instances_project_region: "europe-north1"
 
-ansible_sa_name: "ansible-sa"
+instance_roles:
+  utility:
+    disk_size_gb: 150
+    additional_disks:
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-0"
+      disk_labels:
+        purpose: parcels
 
-app: elasticsearch
-grp_prefix: es
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-1"
+      disk_labels:
+        purpose: logs
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 52
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-2"
+      disk_labels:
+        purpose: data01
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 53
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-3"
+      disk_labels:
+        purpose: data02
+
+
+    source_image: "rocky-linux-8-optimized-gcp"
+    source_image_project: "rocky-linux-cloud"
+
+    instance_name: es-master
+    machine_type: e2-medium
+
+    subnetwork: priv-net
+
+    count: 2
+    preemptible: true
+
+    labels:
+      createdby: iac
+      app: cloudera
+      environment: "{{ target_env }}"
+      role: utility
+      purpose: cluster
+
+    tags:
+    - ssh
+
+    service_account:
+      email: "1095120801558-compute@developer.gserviceaccount.com"
+      scopes: ["storage-ro"]
+  worker:
+    disk_size_gb: 150
+    additional_disks:
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-0"
+      disk_labels:
+        purpose: parcels
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-1"
+      disk_labels:
+        purpose: logs
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 52
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-2"
+      disk_labels:
+        purpose: data01
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 53
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-3"
+      disk_labels:
+        purpose: data02
+
+
+    source_image: "rocky-linux-8-optimized-gcp"
+    source_image_project: "rocky-linux-cloud"
+
+    instance_name: es-master
+    machine_type: e2-medium
+
+    subnetwork: priv-net
+
+    count: 3
+    preemptible: true
+
+    labels:
+      createdby: iac
+      app: cloudera
+      environment: "{{ target_env }}"
+      role: worker
+      purpose: cluster
+
+    tags:
+    - ssh
+
+    service_account:
+      email: "1095120801558-compute@developer.gserviceaccount.com"
+      scopes: ["storage-ro"]
+  master:
+    disk_size_gb: 150
+    additional_disks:
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-0"
+      disk_labels:
+        purpose: parcels
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-1"
+      disk_labels:
+        purpose: logs
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 52
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-2"
+      disk_labels:
+        purpose: data01
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 53
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-3"
+      disk_labels:
+        purpose: data02
+
+
+    source_image: "rocky-linux-8-optimized-gcp"
+    source_image_project: "rocky-linux-cloud"
+
+    instance_name: es-master
+    machine_type: e2-medium
+
+    subnetwork: priv-net
+
+    count: 2
+    preemptible: true
+
+    labels:
+      createdby: iac
+      app: cloudera
+      environment: "{{ target_env }}"
+      role: master
+      purpose: cluster
+
+    tags:
+    - ssh
+
+    service_account:
+      email: "1095120801558-compute@developer.gserviceaccount.com"
+      scopes: ["storage-ro"]
+  edge:
+    disk_size_gb: 150
+    additional_disks:
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-0"
+      disk_labels:
+        purpose: parcels
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 100
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-1"
+      disk_labels:
+        purpose: logs
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 52
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-2"
+      disk_labels:
+        purpose: data01
+
+
+    - auto_delete: true
+      boot: false
+      disk_size_gb: 53
+      disk_type: pd-standard
+      disk_name: null
+      device_name: "disk-3"
+      disk_labels:
+        purpose: data02
+
+
+    source_image: "rocky-linux-8-optimized-gcp"
+    source_image_project: "rocky-linux-cloud"
+
+    instance_name: es-master
+    machine_type: e2-medium
+
+    subnetwork: priv-net
+
+    count: 2
+    preemptible: true
+
+    labels:
+      createdby: iac
+      app: cloudera
+      environment: "{{ target_env }}"
+      role: edge
+      purpose: cluster
+
+    tags:
+    - ssh
+
+    service_account:
+      email: "1095120801558-compute@developer.gserviceaccount.com"
+      scopes: ["storage-ro"]

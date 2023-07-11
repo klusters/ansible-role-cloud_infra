@@ -7,6 +7,3 @@
 
 - import_tasks: prepare.yml
   when: state == 'present'
-
-- import_tasks: 'ssh_{{ cloud_provider }}.yml'
-  when: state == 'present'
