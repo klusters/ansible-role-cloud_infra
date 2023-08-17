@@ -16,6 +16,8 @@ keyed_groups:
   - prefix: {{ grp_prefix }}
     key: labels.purpose
 
+  - key: labels.instance_role
+
 auth_kind: serviceaccount
 service_account_file: {{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}
 
