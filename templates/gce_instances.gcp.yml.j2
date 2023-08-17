@@ -18,6 +18,8 @@ keyed_groups:
 
   - key: labels.instance_role
 
+leading_separator: false
+
 auth_kind: serviceaccount
 service_account_file: {{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}
 
