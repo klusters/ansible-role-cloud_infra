@@ -20,6 +20,8 @@ keyed_groups:
 
 leading_separator: false
 
+name_suffix: .{{ krb5_domain | default(krb5_realm | lower) }}
+
 auth_kind: serviceaccount
 service_account_file: {{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}
 
