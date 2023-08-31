@@ -9,11 +9,11 @@ filters:
   - labels.purpose = "cluster"
 
 keyed_groups:
-  # WILL CREATE GROUPS NAMED "{{ grp_prefix }}_<role>" (e.g. {{ grp_prefix }}_master)
-  - prefix: {{ grp_prefix }}
+  # WILL CREATE GROUPS NAMED "{{ terraform_grp_prefix }}_<role>" (e.g. {{ terraform_grp_prefix }}_master)
+  - prefix: {{ terraform_grp_prefix }}
     key: labels.role
 
-  - prefix: {{ grp_prefix }}
+  - prefix: {{ terraform_grp_prefix }}
     key: labels.purpose
 
   - key: labels.instance_role
