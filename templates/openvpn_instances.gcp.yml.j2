@@ -1,0 +1,40 @@
+plugin: google.cloud.gcp_compute
+
+projects:
+  - {{ lookup('env','GCLOUD_PROJECT') }}
+
+filters:
+  - labels.createdby = "iac"
+  - labels.environment = "{{ target_env }}"
+  - labels.app = "{{ terraform_app_name }}"
+
+keyed_groups:
+  # WILL CREATE GROUPS NAMED "{{ terraform_grp_prefix }}_<role>" (e.g. {{ terraform_grp_prefix }}_master)
+  - prefix: {{ terraform_grp_prefix }}
+    key: labels.role
+
+  - prefix: {{ terraform_grp_prefix }}
+    key: labels.purpose
+
+  - key: labels.instance_role
+
+leading_separator: false
+
+auth_kind: serviceaccount
+service_account_file: {{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}
+
+scopes:
+  - 'https://www.googleapis.com/auth/cloud-platform'
+  - 'https://www.googleapis.com/auth/compute.readonly'
+
+groups:
+  centos_7: "'centos-7' in disks[0].licenses[0]"
+  centos_8: "'centos-8' in disks[0].licenses[0]"
+  ubuntu_1804_lts: "'ubuntu-1804' in disks[0].licenses[0]"
+  ubuntu_2004_lts: "'ubuntu-2004' in disks[0].licenses[0]"
+
+hostnames:
+  - name
+
+compose:
+  ansible_host: networkInterfaces[0].accessConfigs[0].natIP
