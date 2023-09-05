@@ -40,3 +40,5 @@ hostnames:
 
 compose:
   ansible_host: networkInterfaces[0].networkIP
+  host_template: labels.instance_role
+  host_role: labels.role
