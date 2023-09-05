@@ -34,6 +34,8 @@ groups:
   centos_8: "'centos-8' in disks[0].licenses[0]"
   ubuntu_1804_lts: "'ubuntu-1804' in disks[0].licenses[0]"
   ubuntu_2004_lts: "'ubuntu-2004' in disks[0].licenses[0]"
+  db_server: role == 'utility'
+  cloudera_manager: role == 'utility'
 
 hostnames:
   - name
