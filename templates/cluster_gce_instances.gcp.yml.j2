@@ -30,12 +30,12 @@ scopes:
   - 'https://www.googleapis.com/auth/compute.readonly'
 
 groups:
-  centos_7: "'centos-7' in disks[0].licenses[0]"
-  centos_8: "'centos-8' in disks[0].licenses[0]"
+  rocky_linux_9: "'rocky-linux-9' in disks[0].licenses[0]"
+  rocky_linux_8: "'rocky-linux-8' in disks[0].licenses[0]"
   ubuntu_1804_lts: "'ubuntu-1804' in disks[0].licenses[0]"
   ubuntu_2004_lts: "'ubuntu-2004' in disks[0].licenses[0]"
-  db_server: role == 'utility'
-  cloudera_manager: role == 'utility'
+  db_server: "labels.role == 'utility'"
+  cloudera_manager: "labels.role == 'utility'"
 
 hostnames:
   - name
