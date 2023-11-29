@@ -1,0 +1,46 @@
+plugin: google.cloud.gcp_compute
+
+projects:
+  - {{ lookup('env','GCLOUD_PROJECT') }}
+
+filters:
+  - labels.createdby = "iac"
+  - labels.environment = "{{ target_env }}"
+  - labels.purpose = "cluster"
+
+keyed_groups:
+  # WILL CREATE GROUPS NAMED "{{ terraform_grp_prefix }}_<role>" (e.g. {{ terraform_grp_prefix }}_master)
+  - prefix: {{ terraform_grp_prefix }}
+    key: labels.role
+
+  - prefix: {{ terraform_grp_prefix }}
+    key: labels.purpose
+
+  - key: labels.instance_role
+
+leading_separator: false
+
+name_suffix: .{{ krb5_domain | default(krb5_realm | lower) }}
+
+auth_kind: serviceaccount
+service_account_file: {{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}
+
+scopes:
+  - 'https://www.googleapis.com/auth/cloud-platform'
+  - 'https://www.googleapis.com/auth/compute.readonly'
+
+groups:
+  rocky_linux_9: "'rocky-linux-9' in disks[0].licenses[0]"
+  rocky_linux_8: "'rocky-linux-8' in disks[0].licenses[0]"
+  ubuntu_1804_lts: "'ubuntu-1804' in disks[0].licenses[0]"
+  ubuntu_2004_lts: "'ubuntu-2004' in disks[0].licenses[0]"
+  db_server: "labels.role == 'utility'"
+  cloudera_manager: "labels.role == 'utility'"
+
+hostnames:
+  - name
+
+compose:
+  ansible_host: networkInterfaces[0].networkIP
+  host_template: labels.instance_role
+  host_role: labels.role

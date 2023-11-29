@@ -9,28 +9,15 @@
 - name: Generate Terraform vars
   template:
     src: '{{ template_tfvars }}'
-    dest: '{{ terraform_dir }}/terraform.tfvars.json'
+    dest: '{{ terraform_dir }}/layers/{{ terraform_layer }}/terraform.tfvars.json'
     mode: 0644
-
-- name: Create {{ ssh_files_path }}
-  file:
-    state: directory
-    path: '{{ ssh_files_path }}'
-    mode: 0700
-
-- name: Generate SSH key
-  openssh_keypair:
-    path: '{{ ssh_files_path }}/{{ ssh_privkey_name }}'
-    type: rsa
-    size: 4096
-    state: present
-    force: yes
 
 - name: Terraform
   terraform:
-    force_init: yes
-    project_path: '{{ terraform_dir }}'
+    force_init: true
+    project_path: '{{ terraform_dir }}/layers/{{ terraform_layer }}'
     state: '{{ state }}'
     binary_path: "{{ terraform_bin | d(omit) }}"
     workspace: "{{ terraform_workspace }}"
+    init_reconfigure: true
   environment: '{{ terraform_env_vars | combine(terraform_extra_env_vars) }}'

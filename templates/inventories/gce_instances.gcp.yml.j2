@@ -1,4 +1,4 @@
-plugin: gcp_compute
+plugin: google.cloud.gcp_compute
 
 projects:
   - {{ lookup('env','GCLOUD_PROJECT') }}
@@ -6,15 +6,21 @@ projects:
 filters:
   - labels.createdby = "iac"
   - labels.environment = "{{ target_env }}"
-  - labels.app = "{{ app }}"
+  - labels.app = "{{ terraform_app_name }}"
 
 keyed_groups:
-  # WILL CREATE GROUPS NAMED "{{ grp_prefix }}_<role>" (e.g. {{ grp_prefix }}_master)
-  - prefix: {{ grp_prefix }}
+  # WILL CREATE GROUPS NAMED "{{ terraform_grp_prefix }}_<role>" (e.g. {{ terraform_grp_prefix }}_master)
+  - prefix: {{ terraform_grp_prefix }}
     key: labels.role
 
-  - prefix: {{ grp_prefix }}
+  - prefix: {{ terraform_grp_prefix }}
     key: labels.purpose
+
+  - key: labels.instance_role
+
+leading_separator: false
+
+name_suffix: .{{ krb5_domain | default(krb5_realm | lower) }}
 
 auth_kind: serviceaccount
 service_account_file: {{ lookup('env','GOOGLE_APPLICATION_CREDENTIALS') }}
