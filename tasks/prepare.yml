@@ -3,8 +3,9 @@
 - name: Generate dynamic inventory file
   template:
     src: '{{ template_inventory }}'
-    dest: '{{ inventory_dest }}/{{ template_inventory.split(".j2")[0] }}'
+    dest: '{{ inventory_dest }}/{{ template_inventory.split(".j2")[0] | basename }}'
     mode: 0644
+  when: cloud_infra_prepare_inventory
 
 - name: Refresh inventory
   meta: refresh_inventory

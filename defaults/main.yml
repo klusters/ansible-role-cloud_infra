@@ -9,19 +9,18 @@ terraform_project_version: 'main'
 
 terraform_env_vars: {}
 
-terraform_dir: "{{ lookup('env','HOME') }}/terraform"
+terraform_dir: "{{ lookup('env','HOME') }}/terraform-{{ target_env }}"
 terraform_layer: 'instances'
 terraform_workspace: '{{ target_env }}'
 terraform_grp_prefix: 'cdp'
 terraform_app_name: 'cdp'
-terraform_state_file: 'terraform.tfstate'
-template_inventory: 'gce_instances.gcp.yml.j2'
-template_tfvars: 'tfvars.json.j2'
+template_inventory: 'inventories/gce_instances.gcp.yml.j2'
+template_tfvars: 'layers/{{ terraform_layer }}_tfvars.json.j2'
 
-inventory_dest: '{{ playbook_dir }}/../../../inventories/{{ target_env }}'
+inventory_dest: "{{ ansible_inventory_sources[0] }}"
 
-instances_project_region: "europe-north1"
-
+instances_region: "europe-north1"
+instances_project_id: "{{ lookup('env','GCLOUD_PROJECT') }}"
 instance_roles:
   utility:
     disk_size_gb: 150
@@ -291,3 +290,60 @@ instance_roles:
     service_account:
       email: "1095120801558-compute@developer.gserviceaccount.com"
       scopes: ["storage-ro"]
+
+fw_rules_project_id: "{{ lookup('env','GCLOUD_PROJECT') }}"
+fw_rules:
+  - name: allow-ssh
+    description: Allow SSH
+    direction: INGRESS
+    priority: null
+    ranges:
+      - 1.2.3.4/24
+      - 5.6.7.8/24
+      - 9.10.11.12/20
+    source_tags: null
+    source_service_accounts: null
+    target_tags:
+      - ssh
+    target_service_accounts: null
+    allow:
+      - protocol: tcp
+        ports:
+          - 22
+    deny: []
+    log_config: null
+
+  - name: open-bar
+    description: Allow everything
+    direction: INGRESS
+    priority: null
+    ranges:
+      - 1.2.3.4/24
+      - 5.6.7.8/24
+      - 9.10.11.12/20
+    source_tags: null
+    source_service_accounts: null
+    target_tags:
+      - openbar
+    target_service_accounts: null
+    allow:
+      - protocol: tcp
+        ports:
+          - 1-65535
+    deny: []
+    log_config: null
+
+network_project_id: "{{ lookup('env','GCLOUD_PROJECT') }}"
+network_name: cdp-training-ses
+network_region: "europe-north1"
+network_subnetworks:
+  - subnet_name: pub-net
+    subnet_ip: 10.0.20.0/24
+    subnet_region: europe-north1
+    subnet_private_access: true
+  - subnet_name: priv-net
+    subnet_ip: 10.0.21.0/24
+    subnet_region: europe-north1
+    subnet_private_access: true
+
+cloud_infra_prepare_inventory: true

@@ -19,6 +19,5 @@
     state: '{{ state }}'
     binary_path: "{{ terraform_bin | d(omit) }}"
     workspace: "{{ terraform_workspace }}"
-    state_file: "{{ terraform_state_file }}"
     init_reconfigure: true
   environment: '{{ terraform_env_vars | combine(terraform_extra_env_vars) }}'
