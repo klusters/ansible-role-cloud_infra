@@ -2,6 +2,6 @@
   "instances_project_id": "{{ instances_project_id }}",
   "network_project_id": "{{ network_project_id }}",
   "instances_region": "{{ instances_region }}",
-  "name_prefix_sep": "{{ name_prefix_sep | d(omit) }}",
+  "hostname_suffix_separator": "{{ hostname_suffix_separator | d(omit) }}",
   "instance_roles": {{ instance_roles | to_json }}
 }
